@@ -3,11 +3,12 @@ import { IsNumber, IsString } from 'class-validator';
 export class CreateCarDTO{
 
     @IsString()
-    readonly brand:          string;
-    
+    model:          string;
+
     @IsString()
-    readonly model:          string;
+    brand:          string;
     
     @IsNumber()
-    readonly year:           number;
+    year:           number;
+    
 }

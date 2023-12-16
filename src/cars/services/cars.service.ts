@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Car } from '../interfaces/car.interface';
 import { v4 as uuid } from 'uuid';
+import { CreateCarDTO } from '../dtos/CreateCar.dto';
 
 @Injectable()
 export class CarsService {
@@ -116,4 +117,23 @@ export class CarsService {
       resolve(resultCar);
     });
   }
+
+
+  createCar(carInfo: CreateCarDTO){
+
+    const newCar: Car = {
+      id: uuid(),
+      ...carInfo
+    };
+
+    this.cars.push(newCar);
+    
+    return { 
+      message: 'Car created successfully',
+      status: 200,
+      data: newCar
+    }
+  
+  }
+
 }
