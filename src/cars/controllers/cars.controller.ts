@@ -35,13 +35,12 @@ export class CarsController {
   }
 
   @Patch('/:id')
-  updateCar(@Param('id') id: ParseIntPipe, @Body() UpdateCarDTO: UpdateCarDTO) {
-    return UpdateCarDTO ;
+  updateCar(@Param('id', ParseUUIDPipe) id: string, @Body() updateCarDTO: UpdateCarDTO) {
+    return this.carService.updateCar(id, updateCarDTO);
   }
 
   @Delete('/:id')
-  deleteCar(@Param('id') id: number, @Body() bodyPayload: any) {
-    console.log(bodyPayload);
-    return { bodyPayload };
+  deleteCar(@Param('id', ParseUUIDPipe) id: string) {
+    return this.carService.deleteCar(id);
   }
 }

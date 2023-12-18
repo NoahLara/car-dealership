@@ -7,12 +7,15 @@ export class UpdateCarDTO {
     @IsUUID()
     id?:        string;
 
+    @IsOptional()
     @IsString()
     model?:     string;
 
+    @IsOptional()
     @IsString()
     brand?:     string;
     
+    @IsOptional()
     @IsNumber()
     year?:      number;
 
