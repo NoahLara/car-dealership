@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Car } from '../interfaces/car.interface';
 import { v4 as uuid } from 'uuid';
 import { CreateCarDTO } from '../dtos/CreateCar.dto';
@@ -102,20 +102,14 @@ export class CarsService {
     return this.cars;
   }
 
-  getCarByID(id: string): Promise<Car> {
-    return new Promise((resolve, reject) => {
-      this.cars.forEach((car) =>
-        console.log(`Car: ${car.model} | Id: ${car.id}`),
-      );
+  getCarByID(id: string): Car {
 
-      const resultCar: Car | undefined = this.cars.find((car) => car.id === id);
+    const resultCar: Car | undefined = this.cars.find((car) => car.id === id);
 
-      if (!resultCar) {
-        reject();
-      }
+    if (!resultCar) throw new NotFoundException(`Car with id '${id}' does not existing`);
 
-      resolve(resultCar);
-    });
+    return resultCar;
+
   }
 
 
