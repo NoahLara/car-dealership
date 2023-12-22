@@ -1,25 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateBrandDto, UpdateBrandDto  } from './dto';
-import { v4 as uuid  } from 'uuid';
-import { Brand } from './entities/brand.entity';
+import { CreateBrandDto, UpdateBrandDto } from '../dto';
+import { v4 as uuid } from 'uuid';
+import { Brand } from '../entities/brand.entity';
 
 @Injectable()
 export class BrandsService {
-
   private brands: Array<Brand> = [];
 
   create(createBrandDto: CreateBrandDto) {
-
     const newBrand: Brand = {
       id: uuid(),
       name: createBrandDto.name,
-      createdAt: new Date().getTime()
-    }
+      createdAt: new Date().getTime(),
+    };
 
     this.brands.push(newBrand);
 
     return newBrand;
-
   }
 
   findAll() {
@@ -27,42 +24,37 @@ export class BrandsService {
   }
 
   findOne(id: string) {
-    
     const brand = this.brands.find((brand) => brand.id === id);
 
-    if(!brand) throw new NotFoundException(`Brand with if '${id}' not found`);
+    if (!brand) throw new NotFoundException(`Brand with if '${id}' not found`);
 
     return brand;
-    
   }
 
   update(id: string, updateBrandDto: UpdateBrandDto) {
-
     let brandDB = this.findOne(id);
 
-    
     this.brands = this.brands.map((brand) => {
-      
-      if(brand.id === id){
-        
+      if (brand.id === id) {
         brandDB.updatedAt = new Date().getTime();
         brandDB = { ...brand, ...updateBrandDto };
 
         return brandDB;
-
       }
 
       return brand;
-
-    })
+    });
 
     return brandDB;
-
   }
 
   remove(id: string) {
     const brandDB = this.findOne(id);
     this.brands = this.brands.filter((brand) => brand.id !== id);
-    return { message: `Brand ${brandDB.name} removed successfully`};
+    return { message: `Brand ${brandDB.name} removed successfully` };
+  }
+
+  fillBrandsWithSeedData(brands: Array<Brand>) {
+    this.brands = brands;
   }
 }
